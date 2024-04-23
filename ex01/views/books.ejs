@@ -1,0 +1,30 @@
+<h1><%=title%></h1>
+<div id="books"></div>
+<!--도서목록 템플릿 ,/*row하면 사진이 가로로 나열됨*/--> 
+<script id="temp_books" type="x-handlebars-template">
+    <div class="row"> 
+    {{#each documents}}
+        <div class="col-2 mb-2">
+            <img src={{thumbnail}}>
+            <div class="ellipsis" style="font-size:20px "title">{{title}}</div>
+            <div>{{price}}</div>
+        </div>
+    {{/each}}
+    </div>
+</script>
+
+<script> //앞에 $붙으면 제이쿼리명령어
+    $.ajax({
+       type:"get",
+       url:"https://dapi.kakao.com/v3/search/book?target=title",
+       data:"json",
+       headers:{"Authorization":"KakaoAK d38f2d221a9be4580957340c539f01ab"},
+       data:{"query":"자바",size:12}, //size: F12눌러서 나오는 array숫자 조절
+       success:function(data){
+        alert("성공");
+        console.log(data);
+        const temp=Handlebars.compile($("#temp_books").html());
+        $("#books").html(temp(data))
+       } 
+    });
+</script>
